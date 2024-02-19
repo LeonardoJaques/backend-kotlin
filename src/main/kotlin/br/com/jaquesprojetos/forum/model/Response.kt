@@ -1,12 +1,13 @@
 package br.com.jaquesprojetos.forum.model
 
-import java.time.LocalDate
+import br.com.jaquesprojetos.forum.dto.TopicView
+import java.time.LocalDateTime
 
 data class Response(
-    val id: Long? = null,
+    var id: Long? = null,
     val message: String,
     val author: User,
-    val dateCreate: LocalDate = LocalDate.now(),
-    val topic: Topic,
+    val dateCreate: LocalDateTime = LocalDateTime.now(),
+    val topic: TopicView,
     val solution: Boolean
 )

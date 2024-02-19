@@ -1,57 +1,34 @@
 package br.com.jaquesprojetos.forum.service
 
-import br.com.jaquesprojetos.forum.model.Course
+import br.com.jaquesprojetos.forum.dto.ResponseView
+import br.com.jaquesprojetos.forum.dto.newResponseForm
+import br.com.jaquesprojetos.forum.mapper.ResponseFormMapper
+import br.com.jaquesprojetos.forum.mapper.ResponseViewMapper
 import br.com.jaquesprojetos.forum.model.Response
-import br.com.jaquesprojetos.forum.model.Topic
-import br.com.jaquesprojetos.forum.model.User
 import org.springframework.stereotype.Service
+import java.util.stream.Collectors
 
 @Service
-class ResponseService(private var responses: List<Response>) {
-    init {
-        val course = Course(
-            id = 1,
-            name = "Kotlin",
-            category = "Programacao"
-        )
-        val author = User(
-            id = 1,
-            name = "Ana da Silva",
-            email = "ana@email.com"
-        )
-        val topic = Topic(
-            id = 1,
-            title = "Duvida Kotlin",
-            message = "Variaveis no Kotlin",
-            course = course,
-            author = author
-        )
+class ResponseService(
+    private var responses: List<Response>,
+    private val responseViewMapper: ResponseViewMapper,
+    private val responseFormMapper: ResponseFormMapper
+) {
 
-        val responseA = Response(
-            id = 1,
-            message = "Resposta 1",
-            author = author,
-            topic = topic,
-            solution = false
-        )
-
-        val responseB = Response(
-            id = 2,
-            message = "Resposta 2",
-            author = author,
-            topic = topic,
-            solution = false
-        )
-
-
-        responses = listOf(responseA, responseB)
+    fun list(): List<ResponseView> {
+        return responses.stream().map { t ->
+            responseViewMapper.map(t)
+        }.collect(Collectors.toList())
     }
 
-    fun list(): List<Response> {
-        return responses
+    fun getResponse(id: Long): ResponseView {
+        val response = responses.stream().filter { it.id == id }.findFirst().get()
+        return responseViewMapper.map(response)
     }
 
-    fun getResponse(id: Long): Response {
-        return responses.stream().filter { it.id == id }.findFirst().get()
+    fun createResponse(form: newResponseForm): Unit {
+        val response = responseFormMapper.map(form)
+        response.id = responses.size.toLong() + 1
+        responses = responses.plus(response)
     }
 }
