@@ -10,5 +10,5 @@ data class Topic(
     val course: Course,
     val author: User,
     val status: TopicStatus = TopicStatus.NOT_ANSWERED,
-    val answer: List<Answer> = ArrayList()
+    val answers: List<Answers> = ArrayList()
 )
