@@ -2,9 +2,12 @@ package br.com.jaquesprojetos.forum.controller
 
 import br.com.jaquesprojetos.forum.dto.NewTopicForm
 import br.com.jaquesprojetos.forum.dto.TopicView
+import br.com.jaquesprojetos.forum.dto.UpdateTopicForm
 import br.com.jaquesprojetos.forum.service.TopicService
 import jakarta.validation.Valid
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.util.UriComponentsBuilder
 
 @RestController
 @RequestMapping("/topic")
@@ -20,8 +23,18 @@ class TopicController(private val service: TopicService) {
     }
 
     @PostMapping
-    fun createTopic(@RequestBody @Valid dto: NewTopicForm) {
-        service.createTopic(dto)
+    fun createTopic(
+        @RequestBody @Valid dto: NewTopicForm,
+        uriBuilder: UriComponentsBuilder
+    ): ResponseEntity<TopicView> {
+        val topicView = service.createTopic(dto)
+        val uri = uriBuilder.path("/topic/{id}").buildAndExpand(topicView.id).toUri()
+        return ResponseEntity.created(uri).body(topicView)
+    }
+
+    @PutMapping
+    fun updateTopic(@RequestBody @Valid form: UpdateTopicForm): TopicView {
+        return service.updateTopic(form)
     }
 
     @DeleteMapping("/{id}")

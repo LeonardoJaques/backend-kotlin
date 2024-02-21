@@ -9,5 +9,5 @@ data class Answer(
     val author: User,
     val dateCreate: LocalDateTime = LocalDateTime.now(),
     val topic: TopicView,
-    val solution: Boolean
+    var solution: Boolean
 )

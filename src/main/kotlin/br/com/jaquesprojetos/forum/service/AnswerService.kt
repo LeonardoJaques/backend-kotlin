@@ -2,6 +2,7 @@ package br.com.jaquesprojetos.forum.service
 
 import br.com.jaquesprojetos.forum.dto.AnswersView
 import br.com.jaquesprojetos.forum.dto.NewAnswersForm
+import br.com.jaquesprojetos.forum.dto.UpdateAnswerForm
 import br.com.jaquesprojetos.forum.exception.NotFoundException
 import br.com.jaquesprojetos.forum.mapper.AnswersFormMapper
 import br.com.jaquesprojetos.forum.mapper.AnswersViewMapper
@@ -22,27 +23,33 @@ class AnswerService(
         }.collect(Collectors.toList())
     }
 
-    fun getResponse(id: Long): AnswersView {
+    fun getAnswers(id: Long): AnswersView {
         val response = answers.stream().filter { it.id == id }.findFirst().get()
         return answersViewMapper.map(response)
     }
 
-    fun createResponse(form: NewAnswersForm): Unit {
+    fun createAnswers(form: NewAnswersForm): AnswersView {
         val answer = answersFormMapper.map(form)
         answer.id = answers.size.toLong() + 1
         answers = answers.plus(answer)
+        return answersViewMapper.map(answer)
     }
 
-    fun updateResponse(id: Long, form: NewAnswersForm) {
-        val answer = answers.stream().filter { it.id == id }.findFirst().get()
+    fun updateAnswers(form: UpdateAnswerForm): AnswersView {
+        val answer = answers.stream()
+            .filter { it.id == form.id }
+            .findFirst()
+            .orElseThrow { NotFoundException("Answer not found") }
         answer.message = form.message
+        answer.solution = form.solution
+        return answersViewMapper.map(answer)
     }
 
     fun deleteAnswers(id: Long) {
         val answer = answers.stream()
             .filter { it.id == id }
             .findFirst()
-            .orElseThrow { NotFoundException("Topic not found") }
+            .orElseThrow { NotFoundException("Answer not found") }
         answers = answers.minus(answer)
     }
 }
