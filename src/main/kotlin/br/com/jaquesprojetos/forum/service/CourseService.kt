@@ -1,5 +1,6 @@
 package br.com.jaquesprojetos.forum.service
 
+import br.com.jaquesprojetos.forum.exception.NotFoundException
 import br.com.jaquesprojetos.forum.model.Course
 import org.springframework.stereotype.Service
 
@@ -30,10 +31,30 @@ class CourseService(var courses: List<Course> = listOf()) {
     }
 
     fun getCourse(id: Long): Course {
-        return courses.stream().filter { it.id == id }.findFirst().get()
+        return courses.stream().filter { it.id == id }.findFirst().orElseThrow {
+            NotFoundException("Course not found")
+        }
+
+
     }
 
     fun createCourse(course: Course): Unit {
         courses.plus(course)
+    }
+
+    fun updateCourse(id: Long, course: Course) {
+        val course = courses.stream().filter { it.id == id }.findFirst().orElseThrow {
+            NotFoundException("Course not found")
+        }
+        course.name = course.name
+        course.category = course.category
+
+    }
+
+    fun deleteCourse(id: Long) {
+        val course = courses.stream().filter { it.id == id }.findFirst().orElseThrow {
+            NotFoundException("Course not found")
+        }
+        courses.minus(course)
     }
 }

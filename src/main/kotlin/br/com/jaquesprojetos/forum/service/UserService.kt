@@ -1,5 +1,6 @@
 package br.com.jaquesprojetos.forum.service
 
+import br.com.jaquesprojetos.forum.exception.NotFoundException
 import br.com.jaquesprojetos.forum.model.User
 import org.springframework.stereotype.Service
 
@@ -29,7 +30,29 @@ data class UserService(final var users: List<User> = listOf()) {
     }
 
     fun getUser(id: Long? = null): User {
-        return users.stream().filter { it.id == id }.findFirst().get()
+        return users.stream().filter { it.id == id }.findFirst().orElseThrow { NotFoundException("User not found") }
     }
+
+    fun createUser(user: User): Unit {
+        users.plus(user)
+    }
+
+    fun updateUser(id: Long, user: User) {
+        val user = users.stream().filter { it.id == id }.findFirst().orElseThrow { NotFoundException("User not found") }
+        user.name = user.name
+        user.email = user.email
+    }
+
+    fun deleteUser(id: Long) {
+        val user = users.stream().filter { it.id == id }.findFirst().orElseThrow { NotFoundException("User not found") }
+        users.minus(user)
+    }
+
+    fun getUserByEmail(email: String): User {
+        return users.stream().filter { it.email == email }.findFirst()
+            .orElseThrow { NotFoundException("User not found") }
+    }
+
+
 }
 

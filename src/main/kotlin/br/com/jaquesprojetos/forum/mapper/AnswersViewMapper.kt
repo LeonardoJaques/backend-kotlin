@@ -1,13 +1,13 @@
 package br.com.jaquesprojetos.forum.mapper
 
-import br.com.jaquesprojetos.forum.dto.ResponseView
-import br.com.jaquesprojetos.forum.model.Response
+import br.com.jaquesprojetos.forum.dto.AnswersView
+import br.com.jaquesprojetos.forum.model.Answer
 import org.springframework.stereotype.Component
 
 @Component
-class ResponseViewMapper : Mapper<Response, ResponseView> {
-    override fun map(t: Response): ResponseView {
-        return ResponseView(
+class AnswersViewMapper : Mapper<Answer, AnswersView> {
+    override fun map(t: Answer): AnswersView {
+        return AnswersView(
             id = t.id,
             message = t.message,
             dateCreated = t.dateCreate,

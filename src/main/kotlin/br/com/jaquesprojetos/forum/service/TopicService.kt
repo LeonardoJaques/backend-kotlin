@@ -1,7 +1,8 @@
 package br.com.jaquesprojetos.forum.service
 
+import br.com.jaquesprojetos.forum.dto.NewTopicForm
 import br.com.jaquesprojetos.forum.dto.TopicView
-import br.com.jaquesprojetos.forum.dto.newTopicForm
+import br.com.jaquesprojetos.forum.exception.NotFoundException
 import br.com.jaquesprojetos.forum.mapper.TopicFormMapper
 import br.com.jaquesprojetos.forum.mapper.TopicViewMapper
 import br.com.jaquesprojetos.forum.model.Topic
@@ -24,14 +25,35 @@ class TopicService(
     }
 
     fun getTopic(id: Long? = null): TopicView {
-        val topic = topics.stream().filter { it.id == id }.findFirst().get()
+        val topic = topics.stream()
+            .filter { it.id == id }
+            .findFirst()
+            .orElseThrow { NotFoundException("Topic not found") }
         return topicViewMapper.map(topic)
     }
 
-    fun createTopic(form: newTopicForm): Unit {
+    fun createTopic(form: NewTopicForm): Unit {
         val topic = topicFormMapper.map(form)
         topic.id = topics.size.toLong() + 1
         topics = topics.plus(topic)
+    }
+
+    fun updateTopic(id: Long, form: NewTopicForm) {
+        val topic = topics.stream()
+            .filter { it.id == id }
+            .findFirst()
+            .orElseThrow { NotFoundException("Topic not found") }
+        topic.title = form.title
+        topic.message = form.message
+    }
+
+    fun deleteTopic(id: Long) {
+        val topic = topics.stream()
+            .filter { it.id == id }
+            .findFirst()
+            .orElseThrow { NotFoundException("Topic not found") }
+        topics = topics.minus(topic)
+
     }
 }
 

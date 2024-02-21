@@ -1,7 +1,7 @@
 package br.com.jaquesprojetos.forum.controller
 
+import br.com.jaquesprojetos.forum.dto.NewTopicForm
 import br.com.jaquesprojetos.forum.dto.TopicView
-import br.com.jaquesprojetos.forum.dto.newTopicForm
 import br.com.jaquesprojetos.forum.service.TopicService
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
@@ -20,7 +20,12 @@ class TopicController(private val service: TopicService) {
     }
 
     @PostMapping
-    fun createTopic(@RequestBody @Valid dto: newTopicForm) {
+    fun createTopic(@RequestBody @Valid dto: NewTopicForm) {
         service.createTopic(dto)
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteTopic(@PathVariable id: Long) {
+        service.deleteTopic(id)
     }
 }
