@@ -27,7 +27,7 @@ class CourseService(var courses: List<Course> = listOf()) {
     }
 
     fun list(): List<Course> {
-        return courses
+        TODO("Not yet implemented")
     }
 
     fun getCourse(id: Long): Course {
@@ -39,22 +39,15 @@ class CourseService(var courses: List<Course> = listOf()) {
     }
 
     fun createCourse(course: Course): Unit {
-        courses.plus(course)
+        TODO("Not yet implemented")
     }
 
     fun updateCourse(id: Long, course: Course) {
-        val course = courses.stream().filter { it.id == id }.findFirst().orElseThrow {
-            NotFoundException("Course not found")
-        }
-        course.name = course.name
-        course.category = course.category
+        TODO("Not yet implemented")
 
     }
 
     fun deleteCourse(id: Long) {
-        val course = courses.stream().filter { it.id == id }.findFirst().orElseThrow {
-            NotFoundException("Course not found")
-        }
-        courses.minus(course)
+        TODO("Not yet implemented")
     }
 }

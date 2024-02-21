@@ -26,7 +26,7 @@ data class UserService(final var users: List<User> = listOf()) {
     }
 
     fun list(): List<User> {
-        return users
+        TODO("Not yet implemented")
     }
 
     fun getUser(id: Long? = null): User {
@@ -34,23 +34,19 @@ data class UserService(final var users: List<User> = listOf()) {
     }
 
     fun createUser(user: User): Unit {
-        users.plus(user)
+        TODO("Not yet implemented")
     }
 
     fun updateUser(id: Long, user: User) {
-        val user = users.stream().filter { it.id == id }.findFirst().orElseThrow { NotFoundException("User not found") }
-        user.name = user.name
-        user.email = user.email
+        TODO("Not yet implemented")
     }
 
     fun deleteUser(id: Long) {
-        val user = users.stream().filter { it.id == id }.findFirst().orElseThrow { NotFoundException("User not found") }
-        users.minus(user)
+        TODO("Not yet implemented")
     }
 
     fun getUserByEmail(email: String): User {
-        return users.stream().filter { it.email == email }.findFirst()
-            .orElseThrow { NotFoundException("User not found") }
+        TODO("Not yet implemented")
     }
 
 
